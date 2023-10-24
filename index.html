@@ -1,0 +1,44 @@
+<html>
+
+<head>
+    <script type="module" src="/@vite/client"></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Pyscript Example</title>
+    <script type="module" src="https://pyscript.net/snapshots/2023.09.1.RC2/core.js"></script>
+    <style type="text/css">
+        .no-display {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <mdui-card variant="elevated" style="width: 100%">
+        <div style="padding: 1rem;" id="description">
+            Welcome to Pyscript!
+        </div>
+        <mdui-linear-progress id="progress" class="no-display" max="1"></mdui-linear-progress>
+        <mdui-text-field min-rows="7" label="Your Code Here!" id="code" variant="filled" type="text"></mdui-text-field>
+    </mdui-card>
+
+    <mdui-segmented-button-group full-width style="margin-top: 0.5rem;">
+        <mdui-segmented-button id="button-run" value="" type="button"
+            class="mdui-segmented-button-first">Run</mdui-segmented-button>
+        <mdui-segmented-button id="button-clear" value="" type="button">Clear</mdui-segmented-button>
+        <mdui-segmented-button id="button-save" value="" type="button"
+            class="mdui-segmented-button-last">Save</mdui-segmented-button>
+    </mdui-segmented-button-group>
+    <div style="padding: 1rem;" id="message" class="clearable"></div>
+
+    <div id="input" py-click="exec_code" class="no-display clearable"></div>
+    <div id="output" class="no-display clearable"></div>
+
+    <script type="module" src="./src/index.ts"></script>
+    <script type="py" src="./main.py" config="./pyscript.json"></script><script-py id="py-0"></script-py>
+
+
+</body>
+
+</html>

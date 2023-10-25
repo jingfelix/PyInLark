@@ -1,0 +1,8 @@
+.no-display {
+    display: none;
+}
+
+#main-card {
+    width: 100%;
+    border-radius: --var(--mdui-shape-corner-extra-large);
+}

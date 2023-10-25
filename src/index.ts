@@ -3,85 +3,98 @@ import 'mdui';
 import { $ } from 'mdui/jq.js';
 import { bitable, IOpenSegmentType, IOpenTextSegment } from '@lark-base-open/js-sdk';
 
-// import './index.css';
+import { loadPyodide } from "pyodide"
+
+import { getRes, notice } from './util';
+
+import './index.css';
+
+import { setColorScheme } from 'mdui/functions/setColorScheme.js';
+
+setColorScheme('#E8EEFD');
 
 $(async function () {
 
-  async function getRes() {
-    const selection = await bitable.base.getSelection();
-    const tableId: any = selection.tableId;
-    const recordId: any = selection.recordId;
-    const fieldId: any = selection.fieldId;
+    async function initPyOdide() {
+        let PyOdide = await loadPyodide({
+            indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/",
+        });
+        return PyOdide;
+    };
 
-    if (!selection || !tableId || !recordId || !fieldId) {
-      console.log('请在表格中打开');
-      alert('请在表格中打开');
-      return;
-    }
+    const pyodide = await initPyOdide();
 
-    return {
-      tableId,
-      recordId,
-      fieldId,
-    }
-  }
+    function runCode(code: string, func: string) {
 
-  async function runOnClick() {
+        try {
+            pyodide.runPython(`${code}`);
 
-    const res: any = await getRes();
+            const result = pyodide.runPython(`str(${func})`);
+            console.log(result);
 
-    const table = await bitable.base.getTableById(res.tableId);
-    const currentValue: any = await table.getCellValue(res.fieldId, res.recordId);
+            return result;
+        } catch (error) {
+            console.log(error);
+            notice("运行失败，请检查代码");
+        }
 
-    // TODO: 这里需要处理不同类型的单元格格式
-    console.log('currentValue', currentValue);
+    };
 
-    $("#input").val(currentValue[0].text);
-    $("#input").trigger("click");
+    const runButton: any = document.getElementById("button-run");
+    runButton.addEventListener("click", async () => {
 
-    $("#progress").removeClass("no-display");
-  }
+        notice("正在运行，请稍后");
+        $("#progress").removeClass("no-display");
 
-  const buttonRun: any = document.querySelector('#button-run')
-  buttonRun.addEventListener('click', runOnClick);
+        const res: any = await getRes();
 
-  function clearOnClick() {
-    const clearable = $(".clearable");
-    clearable.val("");
-    clearable.text("");
+        const table = await bitable.base.getTableById(res.tableId);
+        const currentValue: any = await table.getCellValue(res.fieldId, res.recordId);
+        if (!currentValue) {
+            notice("请在表格中打开/当前值为空");
+            $("#progress").addClass("no-display");
 
-    const pyError = $(".py-error");
-    pyError.remove();
+            return;
+        }
+        else if (currentValue[0].type !== IOpenSegmentType.Text) {
+            console.log(currentValue[0]);
+            notice("当前单元格不是文本类型");
+            $("#progress").addClass("no-display");
 
-    $("#progress").addClass("no-display");
+            return;
+        }
+        else if (!(currentValue[0].text.startsWith("=Py(") && currentValue[0].text.endsWith(")"))) {
+            notice("当前单元格不是Py函数");
+            $("#progress").addClass("no-display");
 
-  };
+            return;
+        };
 
-  $("#button-clear").on("click", clearOnClick);
+        const code: any = $("#code").val();
+        const func: any = currentValue[0].text.slice(4, -1);
+        const result: any = runCode(code, func);
 
-  async function outputOnClick() {
+        const value: IOpenTextSegment | any = {
+            type: IOpenSegmentType.Text,
+            text: result,
+        }
 
-    const res: any = await getRes();
+        notice("运行成功");
+        $("#progress").addClass("no-display");
 
-    const table = await bitable.base.getTableById(res.tableId);
+        await table.setCellValue(res.fieldId, res.recordId, value);
+    });
 
-    const output: any = $("#output").val();
-    console.log('output', output);
+    const clearButton: any = document.getElementById("button-clear");
+    clearButton.addEventListener("click", () => {
+        const clearable = $(".clearable");
+        clearable.val("");
+        clearable.text("");
 
-    $("#input").val("");
+        const pyError = $(".py-error");
+        pyError.remove();
 
-    const value: IOpenTextSegment | any = {
-      type: IOpenSegmentType.Text,
-      text: output,
-    }
-
-    // $("#progress").addClass("no-display");
-
-    await table.setCellValue(res.fieldId, res.recordId, value);
-    clearOnClick();
-  };
-
-  const output: any = document.querySelector('#output')
-  output.addEventListener('click', outputOnClick);
+        $("#progress").addClass("no-display");
+    });
 
 });

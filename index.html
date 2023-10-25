@@ -6,27 +6,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Pyscript Example</title>
-    <script type="module" src="https://pyscript.net/snapshots/2023.09.1.RC2/core.js"></script>
-    <style type="text/css">
-        .no-display {
-            display: none;
-        }
-    </style>
+    <!-- <script type="module" src="https://pyscript.net/snapshots/2023.09.1.RC2/core.js"></script> -->
 </head>
 
 <body>
-    <mdui-card variant="elevated" style="width: 100%">
+    <mdui-card variant="elevated" id="main-card">
         <div style="padding: 1rem;" id="description">
-            Welcome to Pyscript!
+            Use Python in Lark Base
         </div>
         <mdui-linear-progress id="progress" class="no-display" max="1"></mdui-linear-progress>
-        <mdui-text-field autosize="" min-rows="7" label="Your Code Here!" id="code" variant="filled" type="text"></mdui-text-field>
+        <mdui-text-field clearable autosize="" min-rows="7" label="Your Function Here:"
+        id="code" variant="filled" type="text">
+        </mdui-text-field>
     </mdui-card>
 
     <mdui-segmented-button-group full-width style="margin-top: 0.5rem;">
         <mdui-segmented-button id="button-run" value="" type="button"
             class="mdui-segmented-button-first">Run</mdui-segmented-button>
-        <mdui-segmented-button id="button-clear" value="" type="button">Clear</mdui-segmented-button>
+        <mdui-segmented-button id="button-clear" value="" type="button">
+            Clear</mdui-segmented-button>
         <mdui-segmented-button id="button-save" value="" type="button"
             class="mdui-segmented-button-last">Save</mdui-segmented-button>
     </mdui-segmented-button-group>
@@ -36,8 +34,9 @@
     <div id="output" class="no-display clearable"></div>
 
     <script type="module" src="./src/index.ts"></script>
-    <script type="py" src="./main.py" config="./pyscript.json"></script><script-py id="py-0"></script-py>
+    <!-- <script type="py" src="./main.py" config="./pyscript.json"></script><script-py id="py-0"></script-py> -->
 
+    <mdui-snackbar id="notice"></mdui-snackbar>
 
 </body>
 

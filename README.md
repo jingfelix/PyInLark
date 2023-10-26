@@ -2,6 +2,10 @@
 
 PyInLark 是一个飞书多维表格插件，仅需在插件中编写 Python 代码，即可在多维表格中使用自定义的函数。
 
+
+https://github.com/jingfelix/PyInLark/assets/72600955/eb79157e-6e00-4b77-ac69-23ceda4aa1be
+
+
 ## 安装
 
 在飞书多维表格插件中选择新增插件，填写多维表格插件的 URL。

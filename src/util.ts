@@ -1,4 +1,5 @@
 import { bitable } from '@lark-base-open/js-sdk';
+import i18next from 'i18next';
 
 export async function getRes() {
     const selection = await bitable.base.getSelection();
@@ -7,8 +8,8 @@ export async function getRes() {
     const fieldId: any = selection.fieldId;
 
     if (!selection || !tableId || !recordId || !fieldId) {
-        console.log('请在表格中打开');
-        notice('请在表格中打开');
+        console.log(i18next.t("open_in_base"));
+        notice(i18next.t("open_in_base"));
         return;
     }
 

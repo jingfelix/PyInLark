@@ -1,32 +1,35 @@
 <html>
 
 <head>
-    <script type="module" src="/@vite/client"></script>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Pyscript Example</title>
+    <title>PyInLark</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <!-- <script type="module" src="https://pyscript.net/snapshots/2023.09.1.RC2/core.js"></script> -->
 </head>
 
 <body>
     <mdui-card variant="elevated" id="main-card">
-        <div style="padding: 1rem;" id="description">
-            Use Python in Lark Base
+        <div style="padding: 1rem;" id="description" data-i18n="card">
         </div>
         <mdui-linear-progress id="progress" class="no-display" max="1"></mdui-linear-progress>
-        <mdui-text-field clearable autosize="" min-rows="7" label="Your Function Here:"
+        <mdui-text-field clearable autosize="" min-rows="7" label="Your Function Here:" data-i18n="[label]label"
         id="code" variant="filled" type="text">
         </mdui-text-field>
     </mdui-card>
 
     <mdui-segmented-button-group full-width style="margin-top: 0.5rem;">
-        <mdui-segmented-button id="button-run" value="" type="button"
-            class="mdui-segmented-button-first">Run</mdui-segmented-button>
-        <!-- <mdui-segmented-button id="button-clear" value="" type="button">
-            Clear</mdui-segmented-button> -->
-        <mdui-segmented-button id="button-clear" value="" type="button"
-            class="mdui-segmented-button-last">Clear</mdui-segmented-button>
+        <mdui-tooltip placement="bottom" data-i18n="[content]run">
+            <mdui-segmented-button id="button-run" value="" type="button" icon="play_arrow--outlined"></mdui-segmented-button>
+        </mdui-tooltip>
+        <mdui-tooltip placement="bottom" data-i18n="[content]clear">
+            <mdui-segmented-button id="button-clear" value="" type="button" icon="clear" data-i18n="[content]clear"></mdui-segmented-button>
+        </mdui-tooltip>
+        <mdui-tooltip placement="bottom" data-i18n="[content]help">
+            <mdui-segmented-button id="button-help" value="" type="button" href="https://github.com/jingfelix/PyInLark" target="_blank" icon="help_outline" data-i18n="[content]help">
+            </mdui-segmented-button>
+        </mdui-tooltip>
     </mdui-segmented-button-group>
     <div style="padding: 1rem;" id="message" class="clearable"></div>
 
@@ -36,7 +39,7 @@
     <script type="module" src="./src/index.ts"></script>
     <!-- <script type="py" src="./main.py" config="./pyscript.json"></script><script-py id="py-0"></script-py> -->
 
-    <mdui-snackbar id="notice"></mdui-snackbar>
+    <mdui-snackbar id="notice" auto-close-delay="5000"></mdui-snackbar>
 
 </body>
 

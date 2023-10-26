@@ -106,6 +106,8 @@ $(async function () {
         pyError.remove();
 
         $("#progress").addClass("no-display");
+
+        $("#code").val("");
     });
 
 });

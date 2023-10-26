@@ -6,3 +6,7 @@
     width: 100%;
     border-radius: --var(--mdui-shape-corner-extra-large);
 }
+
+#vice-card {
+    width: 100%;
+}

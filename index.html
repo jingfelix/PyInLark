@@ -6,7 +6,6 @@
     <title>PyInLark</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-    <!-- <script type="module" src="https://pyscript.net/snapshots/2023.09.1.RC2/core.js"></script> -->
 </head>
 
 <body>
@@ -14,7 +13,7 @@
         <div style="padding: 1rem;" id="description" data-i18n="card">
         </div>
         <mdui-linear-progress id="progress" class="no-display" max="1"></mdui-linear-progress>
-        <mdui-text-field clearable autosize="" min-rows="7" label="Your Function Here:" data-i18n="[label]label"
+        <mdui-text-field autosize="" min-rows="7" data-i18n="[label]label"
         id="code" variant="filled" type="text">
         </mdui-text-field>
     </mdui-card>
@@ -31,15 +30,13 @@
             </mdui-segmented-button>
         </mdui-tooltip>
     </mdui-segmented-button-group>
-    <div style="padding: 1rem;" id="message" class="clearable"></div>
 
     <div id="input" py-click="exec_code" class="no-display clearable"></div>
     <div id="output" class="no-display clearable"></div>
 
-    <script type="module" src="./src/index.ts"></script>
-    <!-- <script type="py" src="./main.py" config="./pyscript.json"></script><script-py id="py-0"></script-py> -->
-
     <mdui-snackbar id="notice" auto-close-delay="5000"></mdui-snackbar>
+
+    <script type="module" src="./src/index.ts"></script>
 
 </body>
 

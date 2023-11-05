@@ -9,7 +9,7 @@ import './locales/i18n';
 
 import { loadPyodide } from "pyodide"
 
-import { getRes, notice } from './util';
+import { getCurrentRes, notice, _getCellValues } from './util';
 
 import './index.css';
 
@@ -26,15 +26,36 @@ $(async function () {
         return PyOdide;
     };
 
+    console.log(new Date().toLocaleString());
     const pyodide = await initPyOdide();
 
-    function runCode(code: string, func: string) {
+    async function runCode(code: string, func: string, recordId: string) {
 
         try {
+
+            // 尝试解析 func 中的变量
+            // 将 ${} 中的fieldname放进一个数组中
+            console.log(new Date().toLocaleString());
+            const reg = /\${(.*?)}/g;
+            const fields: Array<string> = [];
+            let match: any;
+            while ((match = reg.exec(func)) !== null) {
+                fields.push(match[1]);
+            };
+
+            const cellValues: any = await _getCellValues(fields, recordId);
+
+            console.log(cellValues);
+
+            // 将 cellValues 中的值替换到 func 中
+            for (let [key, value] of cellValues) {
+                func = func.replace("${" + key + "}", "'" + value + "'");
+            };
+            console.log(func);
+
             pyodide.runPython(`${code}`);
 
             const result = pyodide.runPython(`str(${func})`);
-            console.log(result);
 
             return result;
         } catch (error) {
@@ -52,7 +73,9 @@ $(async function () {
         // notice("正在运行，请稍后");
         $("#progress").removeClass("no-display");
 
-        const res: any = await getRes();
+        const res: any = await getCurrentRes();
+
+        console.log(new Date().toLocaleString());
 
         const table = await bitable.base.getTableById(res.tableId);
         const currentValue: any = await table.getCellValue(res.fieldId, res.recordId);
@@ -78,7 +101,10 @@ $(async function () {
 
         const code: any = $("#code").val();
         const func: any = currentValue[0].text.slice(4, -1);
-        const result: any = runCode(code, func);
+
+
+        console.log(new Date().toLocaleString());
+        const result: any = await runCode(code, func, res.recordId);
 
         if (!result) {
             $("#progress").addClass("no-display");
@@ -93,6 +119,7 @@ $(async function () {
         notice(i18next.t("run_ok"));
         $("#progress").addClass("no-display");
 
+        console.log(new Date().toLocaleString());
         await table.setCellValue(res.fieldId, res.recordId, value);
     });
 

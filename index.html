@@ -10,8 +10,14 @@
 
 <body>
     <mdui-card variant="elevated" id="main-card">
-        <div style="padding: 1rem;" id="description" data-i18n="card">
-        </div>
+        <mdui-select icon="star_half--outlined" value="示例代码">
+            <mdui-menu-item value="item-1">Item 1</mdui-menu-item>
+            <mdui-menu-item value="item-2">Item 2</mdui-menu-item>
+        </mdui-select>
+        <mdui-select icon="code" value="依赖库">
+            <mdui-menu-item value="item-1">Item 1</mdui-menu-item>
+            <mdui-menu-item value="item-2">Item 2</mdui-menu-item>
+        </mdui-select>
         <mdui-linear-progress id="progress" class="no-display" max="1"></mdui-linear-progress>
         <mdui-text-field autosize="" min-rows="7" data-i18n="[label]label"
         id="code" variant="filled" type="text">
